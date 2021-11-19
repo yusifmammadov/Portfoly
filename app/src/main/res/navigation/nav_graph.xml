@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="cryptocurrency.portfolio.tracker.welcome.WelcomeFragment"
+        android:label="WelcomeFragment"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_emptyPortfolioFragment"
+            app:destination="@id/emptyPortfolioFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emptyPortfolioFragment"
+        android:name="cryptocurrency.portfolio.tracker.portfolio.EmptyPortfolioFragment"
+        android:label="EmptyPortfolioFragment"
+        tools:layout="@layout/fragment_empty_portfolio">
+        <action
+            android:id="@+id/action_emptyPortfolioFragment_to_portfolioFragment"
+            app:destination="@id/portfolioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="cryptocurrency.portfolio.tracker.portfolio.PortfolioFragment"
+        android:label="PortfolioFragment"
+        tools:layout="@layout/fragment_portfolio"/>
+</navigation>

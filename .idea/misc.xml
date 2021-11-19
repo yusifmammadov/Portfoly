@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/drawable/button_shape_large.xml" value="0.14290540540540542" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/drawable/button_shape_medium.xml" value="0.10138888888888889" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/drawable/empty_pie_chart.xml" value="0.10138888888888889" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/drawable/ic__785521_bitcoin_blockchain_icon.xml" value="0.10416666666666667" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/drawable/spinner_background_shape.xml" value="0.14290540540540542" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/activity_main.xml" value="0.13243243243243244" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/add_asset_dropdown_item.xml" value="0.25" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/asset_spinner_dropdown_item.xml" value="0.13243243243243244" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/asset_spinner_item.xml" value="0.5" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/fragment_empty_portfolio.xml" value="0.16" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/fragment_portfolio.xml" value="0.2" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/fragment_welcome.xml" value="0.12" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/layout_add_asset_dialog.xml" value="0.22" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/layout_portfolio_dialog.xml" value="0.18" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/portfolio_dropdown_item.xml" value="0.12978142076502733" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/portfolio_list_item.xml" value="0.15" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/test_layout.xml" value="0.1" />
+        <entry key="..\:/Documents/AndroidProjects/Portfoly/app/src/main/res/layout/testlayout.xml" value="0.13183060109289618" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

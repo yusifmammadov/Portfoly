@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addAssetDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="16dp"
+            android:hint="select a coin"
+            android:textColorHint="@color/secondaryColor"
+            app:endIconDrawable="@drawable/ic_baseline_expand_more_24"
+            app:endIconTint="@color/secondaryColor"
+            app:hintTextColor="@color/secondaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/DropdownMenuStyle">
+
+            <AutoCompleteTextView
+                android:id="@+id/selectAssetDropDownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryTextColor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPrice"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:enabled="true"
+            android:hint="USD price"
+            android:textColorHint="@color/secondaryColor"
+            app:hintTextColor="@color/secondaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/PortfolioTitleTextInputStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPriceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/primaryTextColor"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputAmount"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:enabled="true"
+            android:hint="USD amount"
+            android:textColorHint="@color/secondaryColor"
+            app:hintTextColor="@color/secondaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputPrice"
+            style="@style/PortfolioTitleTextInputStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputAmountEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/primaryTextColor"
+                android:fontFamily="@font/roboto_condensed_regular" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/addButton"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toStartOf="@+id/addButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
