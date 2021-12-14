@@ -1,3 +1,8 @@
 package cryptocurrency.portfolio.tracker.util
 
-sealed class PortfolioEvent
+import cryptocurrency.portfolio.tracker.db.entities.Asset
+
+sealed class PortfolioEvent {
+
+    data class ShowUndoDeleteAssetMessage(val asset:Asset): PortfolioEvent()
+}

@@ -5,35 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import cryptocurrency.portfolio.tracker.model.AssetData
+import cryptocurrency.portfolio.tracker.db.entities.Asset
+import cryptocurrency.portfolio.tracker.db.entities.Portfolio
+import cryptocurrency.portfolio.tracker.db.entities.AssetData
+import cryptocurrency.portfolio.tracker.db.entities.LastUpdated
 
 @Database(
-    entities = [Portfolio::class,AssetData::class],
-    version = 2
+    entities = [Portfolio::class, Asset::class, AssetData::class, LastUpdated::class],
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class PortfolioDatabase: RoomDatabase() {
 
     abstract fun getPortfolioDao(): PortfolioDao
-
-    companion object {
-        @Volatile
-        private var instance: PortfolioDatabase? = null
-        private val LOCK = Any()
-
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-
-            instance ?: createDatabase(context).also{
-                instance = it
-            }
-        }
-
-        private fun createDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext,
-            PortfolioDatabase::class.java,
-            "portfolio_db.db"
-        ).build()
-    }
-
 
 }

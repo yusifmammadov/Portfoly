@@ -1,75 +1,102 @@
 package cryptocurrency.portfolio.tracker.dialog
 
-import android.content.Context
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
+import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import cryptocurrency.portfolio.tracker.adapters.AddAssetApapter
 import cryptocurrency.portfolio.tracker.databinding.LayoutAddAssetDialogBinding
-import cryptocurrency.portfolio.tracker.db.Asset
-import cryptocurrency.portfolio.tracker.model.AssetData
+import cryptocurrency.portfolio.tracker.db.entities.Asset
+import cryptocurrency.portfolio.tracker.db.entities.AssetData
 import cryptocurrency.portfolio.tracker.portfolio.PortfolioViewModel
 
 class AddAssetDialogFragment: DialogFragment() {
-
-    private var width: Int = 0
-    private var height: Int = 0
 
     private var assetSymbol: String? = null
     private var assetIconUrl: String? = null
     private var assetMarketId: String? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = LayoutAddAssetDialogBinding.inflate(layoutInflater)
-        val portfolioViewModel: PortfolioViewModel by viewModels(ownerProducer = {requireParentFragment()})
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val adapter = AddAssetApapter(context!!)
-        binding.selectAssetDropDownMenu.setAdapter(adapter)
-        binding.selectAssetDropDownMenu.setOnItemClickListener { adapterView, view, position, l ->
+        try{
+            val inflater = requireActivity().layoutInflater
+            val binding = LayoutAddAssetDialogBinding.inflate(inflater)
 
-            binding.inputPriceEditText.requestFocus()
-//            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
-            setAssetData(adapter.getItem(position))
-        }
+            val portfolioViewModel: PortfolioViewModel by viewModels(ownerProducer = {requireParentFragment()})
 
-        portfolioViewModel.getAllAssetData().observe(viewLifecycleOwner) {
-            adapter.data = it
-        }
+            val adapter = AddAssetApapter(requireContext())
+            binding.selectAssetDropDownMenu.setAdapter(adapter)
+            binding.selectAssetDropDownMenu.setOnItemClickListener { adapterView, view, position, l ->
 
-        binding.cancelButton.setOnClickListener {
-            dismiss()
-        }
-        binding.addButton.setOnClickListener {
-            val price = binding.inputPriceEditText.text.toString()
-            val amount = binding.inputAmountEditText.text.toString()
-            if (binding.selectAssetDropDownMenu.text.isNotBlank() && price!!.isNotBlank()
-                && amount!!.isNotBlank()) {
-                val asset = Asset (
-                    assetSymbol, price.toDouble(), amount.toDouble(), assetIconUrl, assetMarketId
-                        )
-                portfolioViewModel.addAssettoPortfolio(asset)
+                binding.inputPriceEditText.requestFocus()
+                setAssetData(adapter.getItem(position))
             }
-            dismiss()
+
+            binding.selectAssetDropDownMenu.doOnTextChanged { text, start, before, count ->
+                setAssetDataToNull()
+            }
+
+            portfolioViewModel.getAllAssetData().observe(this) {
+                adapter.data = it
+                savedInstanceState?.let { saved ->
+                    val symbol = saved.getString("assetSymbol")
+                    val url = saved.getString("assetIconUrl")
+                    val marketId = saved.getString("assetMarketId")
+
+                    if (symbol != null && url != null && marketId != null) {
+                        setAssetData(
+                            AssetData(
+                                null, symbol, url, marketId
+                            )
+                        )
+                    }
+                }
+            }
+
+
+            binding.cancelButton.setOnClickListener {
+                dismiss()
+            }
+            binding.addButton.setOnClickListener {
+                val price = binding.inputPriceEditText.text.toString()
+                val amount = binding.inputAmountEditText.text.toString()
+                val symbol = binding.selectAssetDropDownMenu.text.toString()
+                if (symbol.isNotBlank() && price.isNotBlank()
+                    && amount.isNotBlank()) {
+                        if (adapter.containsAssetData(symbol)) {
+                            if (assetMarketId != null) {
+                                val asset = Asset (null, assetSymbol, price.toDouble(),
+                                    amount.toDouble(), assetIconUrl, assetMarketId!!, null, null)
+                                portfolioViewModel.addAssettoPortfolio(asset)
+                                dismiss()
+                            } else {
+                                Toast.makeText(context, "Please select an asset from the list", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+
+                        } else {
+                            Toast.makeText(context, "Such asset doesn't exist", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                } else {
+                    Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            }
+
+            return AlertDialog.Builder(requireActivity())
+                .setView(binding.root)
+                .create()
+        } catch (e: Exception) {
+            return AlertDialog.Builder(requireActivity())
+                .setMessage("${e.message}")
+                .create()
         }
-
-
-        width  = (resources.displayMetrics.widthPixels*0.94).toInt()
-        height = (width*0.92).toInt()
-
-        dialog?.window?.setLayout(width, height)
-
-        return binding.root
     }
 
     private fun setAssetData(item: AssetData?) {
@@ -78,8 +105,18 @@ class AddAssetDialogFragment: DialogFragment() {
         assetMarketId = item?.marketId
     }
 
-    override fun onResume() {
-        super.onResume()
-        dialog?.window?.setLayout(width, height) ?: Log.v("CreatePortfolioDialog", "dialog is null oncreate")
+    private fun setAssetDataToNull() {
+        assetSymbol = null
+        assetIconUrl = null
+        assetMarketId = null
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("assetSymbol", assetSymbol)
+        outState.putString("assetIconUrl", assetIconUrl)
+        outState.putString("assetMarketId", assetMarketId)
+    }
+
+
 }

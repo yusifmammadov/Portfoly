@@ -1,57 +1,55 @@
 package cryptocurrency.portfolio.tracker.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import com.bumptech.glide.Glide
 import cryptocurrency.portfolio.tracker.R
 import cryptocurrency.portfolio.tracker.databinding.PortfolioListItemBinding
-import cryptocurrency.portfolio.tracker.model.AssetItem
+import cryptocurrency.portfolio.tracker.db.entities.Asset
 import java.text.DecimalFormat
 
 val decUsd = DecimalFormat("0.00")
 val decAmount = DecimalFormat("0.00000")
 
-class AssetListAdapter: RecyclerView.Adapter<AssetListAdapter.ViewHolder>() {
-
-    var data = listOf<AssetItem>()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
-
-
-
+class AssetAdapter: ListAdapter<Asset, AssetAdapter.ViewHolder>(AssetDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
-
-    override fun getItemCount(): Int = data.size
-
-    fun swipedDone(holder: ViewHolder) {
-        holder.binding.swipeDelete.visibility = View.VISIBLE
-        holder.binding.item.visibility = View.GONE
-    }
-
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
     class ViewHolder private constructor(val binding: PortfolioListItemBinding): RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(assetItem: AssetItem) {
-            binding.assetIcon.load(assetItem.iconUrl)
-            binding.assetSymbol.text = assetItem.symbol
-            binding.assetAmountBase.text = decAmount.format(assetItem.amount)
-            val amountUsd = "$" + decUsd.format(assetItem.amountUsd)
+        fun bind(asset: Asset) {
+
+            val marketData = asset.marketData
+            Glide.with(binding.assetIcon.context)
+                .load(asset.logoUrl)
+                .placeholder(R.drawable.ic_coin_svgrepo_com)
+                .into(binding.assetIcon)
+
+            binding.assetSymbol.text = asset.symbol
+            binding.assetAmountBase.text = marketData?.originalAmount?.let {
+                decAmount.format(it)
+            } ?: "N/A"
+            val amountUsd = marketData?.usdAmount?.let {
+                "$" + decUsd.format(it)
+            } ?: "N/A"
             binding.assetAmountUsd.text = amountUsd
-            val changeUsd = "$" + decUsd.format(assetItem.changeUsd)
+            val changeUsd = marketData?.changeUsd?.let {
+                "$" + decUsd.format(it)
+            } ?: "N/A"
             binding.assetChangeAmount.text = changeUsd
-            binding.assetChangeAmount.setChangeColor(assetItem.changeUsd)
-            val changePerc = decUsd.format(assetItem.changePerc) + "%"
+            binding.assetChangeAmount.setChangeColor(marketData?.changeUsd ?: 0.0)
+            val changePerc = marketData?.changePerc?.let {
+                decUsd.format(it) + "%"
+            } ?: "N/A"
             binding.assetChangePercentage.text = changePerc
-            binding.assetChangePercentage.setChangeColor(assetItem.changePerc)
+            binding.assetChangePercentage.setChangeColor(marketData?.changePerc ?: 0.0)
         }
 
         companion object {
@@ -65,8 +63,20 @@ class AssetListAdapter: RecyclerView.Adapter<AssetListAdapter.ViewHolder>() {
          private fun TextView.setChangeColor(change: Double) {
              if (change < 0) {
                  this.setTextColor(resources.getColor(R.color.redFall, null))
-             } else this.setTextColor(resources.getColor(R.color.greenRise, null))
+             } else if (change > 0) {
+                 this.setTextColor(resources.getColor(R.color.greenRise, null))
+             } else this.setTextColor(resources.getColor(R.color.primaryTextColor, null))
+
         }
+    }
+
+    class AssetDiff : DiffUtil.ItemCallback<Asset>() {
+
+        override fun areItemsTheSame(oldItem: Asset, newItem: Asset): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: Asset, newItem: Asset): Boolean =
+            oldItem == newItem
     }
 }
 

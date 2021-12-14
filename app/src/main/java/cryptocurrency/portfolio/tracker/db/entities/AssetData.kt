@@ -1,4 +1,4 @@
-package cryptocurrency.portfolio.tracker.model
+package cryptocurrency.portfolio.tracker.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "asset_listing")
 data class AssetData(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
     val symbol: String,
     val iconUrl: String,

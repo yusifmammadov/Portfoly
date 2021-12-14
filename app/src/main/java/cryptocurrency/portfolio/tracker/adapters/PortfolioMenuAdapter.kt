@@ -1,25 +1,17 @@
 package cryptocurrency.portfolio.tracker.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import cryptocurrency.portfolio.tracker.R
-import cryptocurrency.portfolio.tracker.db.PortfolioItem
+import cryptocurrency.portfolio.tracker.db.entities.Portfolio
 
-class PortfolioMenuAdapter(contextWelcome: Context):
-    ArrayAdapter<PortfolioItem>(contextWelcome, 0) {
+class PortfolioMenuAdapter(contextWelcome: Context, private val data: List<Portfolio>):
+    ArrayAdapter<Portfolio>(contextWelcome, 0, data) {
 
-   var data = listOf<PortfolioItem>()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
-
-    override fun getCount(): Int = data.size
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -32,14 +24,15 @@ class PortfolioMenuAdapter(contextWelcome: Context):
         }
 
         val textView: TextView = itemView.findViewById(R.id.titleDropdownItem)
-        textView.text = getItem(position)?.name
-        Log.v("ArrayAdapter", "text set: ${getItem(position)?.name}")
+        textView.text = getItem(position)?.title
         return itemView
     }
 
-
-
-    override fun getItem(position: Int): PortfolioItem? = data[position]
+    fun getItemWithId(id: Int): Portfolio {
+        return data.filter { portfolio ->
+            portfolio.id == id
+        }.first()
+    }
 
 
 }

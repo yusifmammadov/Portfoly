@@ -2,65 +2,32 @@ package cryptocurrency.portfolio.tracker.welcome
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import cryptocurrency.portfolio.tracker.db.Portfolio
-import cryptocurrency.portfolio.tracker.db.PortfolioDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import androidx.lifecycle.*
+import cryptocurrency.portfolio.tracker.PortfolioRepository
+import cryptocurrency.portfolio.tracker.db.entities.Portfolio
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-private const val LOG_TAG = "WelcomeViewModel"
 
-class WelcomeViewModel(val app: Application): AndroidViewModel(app) {
 
-    val roomDb = PortfolioDatabase.invoke(getApplication<Application>().applicationContext)
+@HiltViewModel
+class WelcomeViewModel @Inject constructor(private val repository: PortfolioRepository,
+   private val app: Application): ViewModel() {
 
-    val portfolioDao = roomDb.getPortfolioDao()
-
-    var newPortfolioTitle: String? = null
-
-    val viewModelJob = Job()
-    val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
+    private val _navigateToPortfolioFragment = MutableLiveData<Boolean>(false)
+    val navigateToPortfolioFragment: LiveData<Boolean>
+    get() = _navigateToPortfolioFragment
 
     fun createNewPortfolio(title: String) {
 
-        coroutineScope.launch {
+        viewModelScope.launch {
 
-            try {
-                portfolioDao.upsert(Portfolio(
-                    title
-                )).also {
-                    Log.v(LOG_TAG, "id: $it")
-                }
-            } catch (e: Exception) {
-                Log.v(LOG_TAG, "exception message: ${e.message}")
-            }
-
+            repository.addPortfolio(
+                Portfolio(null, title))
+            val sharedPrefs = app.getSharedPreferences("Portfolio", Context.MODE_PRIVATE)
+            sharedPrefs.edit().putBoolean("hasPortfolio", true).apply()
+            _navigateToPortfolioFragment.value = true
         }
-
-        val sharedPrefs = getApplication<Application>().getSharedPreferences("Portfolio", Context.MODE_PRIVATE)
-        sharedPrefs.edit().putBoolean("hasPortfolio", true).apply()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-}
-
-class WelcomeViewModelFactory(
-    private val application: Application
-) : ViewModelProvider.Factory {
-    @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WelcomeViewModel::class.java)) {
-            return WelcomeViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -1,43 +1,44 @@
 package cryptocurrency.portfolio.tracker.dialog
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import cryptocurrency.portfolio.tracker.callbacks.CreatePortfolioDialogCallback
 import cryptocurrency.portfolio.tracker.databinding.LayoutPortfolioDialogBinding
+import java.lang.ClassCastException
+import java.lang.IllegalStateException
 
-class CreatePortfolioDialogFragment(val callback: CreatePortfolioDialogCallback) : DialogFragment() {
+class CreatePortfolioDialogFragment() : DialogFragment() {
 
-    private var width: Int = 0
-    private var height: Int = 0
+    internal lateinit var listener: CreatePortfolioDialogListener
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = LayoutPortfolioDialogBinding.inflate(layoutInflater)
+    interface CreatePortfolioDialogListener {
+        fun onCreatePortfolio(title: String)
+    }
 
-        width  = (resources.displayMetrics.widthPixels*0.94).toInt()
-        height = (width*0.92).toInt()
-
-        binding.button2.setOnClickListener {
-            callback.onPortfolioCreated(binding.portfolioTitleInput.text.toString())
-            dismiss()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            listener = parentFragment as CreatePortfolioDialogListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString() + " must implement dialog listener")
         }
-
-
-
-        dialog?.window?.setLayout(width, height) ?: Log.v("CreatePortfolioDialog", "dialog is null oncreate")
-
-        return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        dialog?.window?.setLayout(width, height) ?: Log.v("CreatePortfolioDialog", "dialog is null onresume")
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            val inflater = requireActivity().layoutInflater
+            val binding = LayoutPortfolioDialogBinding.inflate(inflater)
+
+
+            binding.button2.setOnClickListener {
+                listener.onCreatePortfolio(binding.portfolioTitleInput.text.toString())
+                dismiss()
+            }
+            AlertDialog.Builder(it)
+                .setView(binding.root)
+                .create()
+        } ?: throw IllegalStateException("Activity cannot be null")
     }
+
 }

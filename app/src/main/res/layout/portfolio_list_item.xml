@@ -4,121 +4,145 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background"
-            android:gravity="center_vertical|start"
-            android:elevation="4dp">
-
-            <RelativeLayout
-                android:id="@+id/assetAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                app:layout_constraintStart_toEndOf="@+id/assetSymbol"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-                <TextView
-                    android:id="@+id/assetAmountBase"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="20dp"
-                    tools:text="2547924351"
-                    />
-
-                <TextView
-                    android:id="@+id/assetAmountUsd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/assetAmountBase"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="20dp"
-                    tools:text="$2135487"/>
-
-            </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="2dp"
+        app:cardCornerRadius="8dp">
 
 
-            <RelativeLayout
-                android:id="@+id/assetChange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
 
-                <TextView
-                    android:id="@+id/assetChangePercentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:textColor="@color/greenRise"
-                    android:textSize="20dp"
-                    tools:text="254%" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_tone">
 
-                <TextView
-                    android:id="@+id/assetChangeAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/assetChangePercentage"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_condensed_regular"
-                    android:textColor="@color/greenRise"
-                    android:textSize="20dp"
-                    tools:text="$2135487"/>
+        <ImageView
+            android:id="@+id/assetIcon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_coin_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/assetSymbol"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/assetSymbol"
+            tools:src="@drawable/ic__785521_bitcoin_blockchain_icon" />
 
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/assetSymbol"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline8"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/assetIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="BTC" />
 
 
-            <TextView
-                android:id="@+id/assetSymbol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3.5dp"
-                android:fontFamily="@font/roboto_condensed_regular"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/assetIcon"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="BTC" />
+        <TextView
+            android:id="@+id/assetAmountBase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/assetAmountUsd"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/guideline10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="2547924351" />
 
-            <ImageView
-                android:id="@+id/assetIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic__785521_bitcoin_blockchain_icon"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/assetAmountUsd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/assetAmountBase"
+            app:layout_constraintTop_toBottomOf="@+id/assetAmountBase"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="$2135487" />
 
-        <RelativeLayout
-            android:id="@+id/swipe_delete"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|right"
-            android:background="@color/redFall">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@android:drawable/ic_menu_delete"/>
-        </RelativeLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/assetChangePercentage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/greenRise"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/assetChangeAmount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/guideline9"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="2545525%" />
+
+        <TextView
+            android:id="@+id/assetChangeAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:textColor="@color/greenRise"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/guideline9"
+            app:layout_constraintTop_toBottomOf="@+id/assetChangePercentage"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="$11111" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -1,4 +1,7 @@
 package cryptocurrency.portfolio.tracker.util
 
-class UpdateResult {
+sealed class UpdateResult {
+
+    class Success: UpdateResult()
+    class Failure: UpdateResult()
 }

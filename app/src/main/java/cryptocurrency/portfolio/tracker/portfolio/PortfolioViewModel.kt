@@ -1,133 +1,112 @@
 package cryptocurrency.portfolio.tracker.portfolio
 
 import android.app.Application
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.*
-import cryptocurrency.portfolio.tracker.api.MarketApi
-import cryptocurrency.portfolio.tracker.api.MarketApiService
-import cryptocurrency.portfolio.tracker.db.*
-import cryptocurrency.portfolio.tracker.model.AssetItem
+import cryptocurrency.portfolio.tracker.PortfolioRepository
+import cryptocurrency.portfolio.tracker.db.entities.Asset
+import cryptocurrency.portfolio.tracker.db.entities.Portfolio
+import cryptocurrency.portfolio.tracker.util.PortfolioEvent
+import cryptocurrency.portfolio.tracker.util.Resource
+import cryptocurrency.portfolio.tracker.util.prepareMarketData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.lang.IllegalArgumentException
-import java.text.DecimalFormat
-
+import javax.inject.Inject
 
 private const val LOG_TAG = "PortfolioViewModel"
-class PortfolioViewModel(app: Application): AndroidViewModel(app) {
 
-    val portfolioList: LiveData<List<Portfolio>>
-    val portfolioDao: PortfolioDao
-    val db: PortfolioDatabase
-    val marketApiService: MarketApiService
-    var currPortfolio: Portfolio? = null
+@HiltViewModel
+class PortfolioViewModel @Inject constructor(private val repository: PortfolioRepository,
+    private val savedStateHandle: SavedStateHandle,
+    private val app: Application):
+    ViewModel() {
 
+    private val _currPortfolio = MutableLiveData<Int>()
+    val currentPortfolio: LiveData<Int>
+    get() = _currPortfolio
 
-    init {
-        db = PortfolioDatabase.invoke(getApplication<Application>().applicationContext)
-        portfolioDao = db.getPortfolioDao()
-        portfolioList = portfolioDao.getAllPortfolios()
-        marketApiService = MarketApi.retrofitService
+    val assetsList: LiveData<Resource<List<Asset>>> = _currPortfolio.switchMap { id ->
+        repository.getAssetList(id).asLiveData()
     }
 
-    private val _listPortfolioItems = MutableLiveData<List<PortfolioItem>>()
-    val listPortfolioItems: LiveData<List<PortfolioItem>>
-    get() = _listPortfolioItems
-
-    private val _listAssetItems = MutableLiveData<List<AssetItem>>()
-    val listAssetItems: LiveData<List<AssetItem>>
-    get() = _listAssetItems
+    private val _portfolioAddedOrDeleted = MutableLiveData<Boolean>(false)
+    val portfolioAddedOrDeleted: LiveData<Boolean>
+    get() = _portfolioAddedOrDeleted
 
 
-    fun setDropdownMenuItems() {
-        val portfolioItemList = mutableListOf<PortfolioItem>()
 
-        portfolioList.value?.forEach {
-            portfolioItemList.add(
-                PortfolioItem(
-                    it.id!!,
-                    it.title
-                )
-            )
-        }
-        _listPortfolioItems.value = portfolioItemList
-    }
 
-    fun getAssetListForId(id: Int?): LiveData<Portfolio>? {
-        return id?.let {
-            portfolioDao.getPortfolioWithId(it)
-        }
-    }
 
-    fun getAllAssetData() = portfolioDao.getAllAssetData()
+    private val portfolioEventChannel = Channel<PortfolioEvent>()
+    val portfolioEvent = portfolioEventChannel.receiveAsFlow()
+
+    fun getAllAssetData() = repository.getAllCoins()
 
     fun addAssettoPortfolio(asset: Asset) {
 
-        viewModelScope.launch {
-            try {
-                val assetList = currPortfolio?.assets?.toMutableList() ?: mutableListOf()
-                assetList.add(asset)
-                portfolioDao.updatePortfolioAssetList(currPortfolio?.id!!, assetList.toList() as List<Asset>)
-
-            } catch (e: Exception) {
-                Log.v(LOG_TAG, "could not add asset: $e")
-            }
-        }
-
-    }
-
-    fun prepareAssetItems(assets: List<Asset?>) {
-        var ids = ""
-        assets.forEach {
-            ids = ids + it?.marketId + ","
-        }
 
         viewModelScope.launch {
             try {
-                val response = marketApiService.getPrice(ids, "usd").body()
-                Log.v(LOG_TAG, "$response")
-                response?.let {priceResponse ->
-                    val listAssetItems = assets.map { asset ->
-                        val assetPrice = priceResponse[asset?.marketId]?.get("usd")?.asDouble
-                        val priceChange = ((assetPrice!! - asset!!.avgPrice!!)/asset.avgPrice!!*100)
-                        val changeUsd = asset.amount!!*priceChange/100
-                        val amount = asset.amount!!/asset.avgPrice!!
-                        val amountUsd = amount*assetPrice
-                        Log.v(LOG_TAG, "assetPrice: ${assetPrice}, priceChange: $priceChange," +
-                                " changeUsd: $changeUsd, amount: $amount, amountUsd: $amountUsd")
-                        AssetItem(asset.symbol!!, amount, amountUsd,
-                        priceChange, changeUsd, asset.logoUrl!!)
-                    }
 
-                    _listAssetItems.postValue(listAssetItems)
-                }
-                Log.v(LOG_TAG, "response success: $response")
-            } catch (e: Exception) {
-                Log.v(LOG_TAG, "response error: ${e.message}")
+            val id = repository.addAsset(asset.apply {
+                this.portfolioId = _currPortfolio.value
+            })
+            updateAssetMarketData(asset, id.toInt())
+
+            } catch (e: Exception) { }
+        }
+
+    }
+
+    private suspend fun updateAssetMarketData(asset: Asset, assetId: Int) {
+        val priceResponse = repository.getAssetPrice(asset.marketId)
+
+        asset.prepareMarketData(priceResponse[asset.marketId]?.get("usd")?.asDouble)
+        asset.id = assetId
+        repository.updateAsset(asset)
+    }
+
+    fun getListPortfolio() = repository.getPortfolioList()
+
+    fun setCurrPortfolio(portfolioId: Int) {
+        _currPortfolio.value = portfolioId
+    }
+
+
+    fun onAssetSwiped(asset: Asset?) = asset?.let {
+            viewModelScope.launch {
+                repository.deleteAsset(it)
+                portfolioEventChannel.send(PortfolioEvent.ShowUndoDeleteAssetMessage(it))
             }
         }
+
+    fun undoDeleteAsset(asset: Asset) = viewModelScope.launch {
+        repository.addAsset(asset)
     }
 
-    fun deleteAsset(position: Int) {
-        val assetList = currPortfolio?.assets?.toMutableList()
-        assetList?.removeAt(position)
-        currPortfolio?.assets = assetList
+    fun onDeletePortfolioClicked() = _currPortfolio.value?.let {
         viewModelScope.launch {
-            //portfolioDao.updatePortfolioAssetList(currPortfolio!!.id!!, assetList?.toList() as List<Asset>)
-            portfolioDao.updatePortfolio(currPortfolio!!)
+            repository.deletePortfolio(it)
         }
-
     }
 
-}
+    fun createPortfolio(title: String) = viewModelScope.launch {
+        repository.addPortfolio(Portfolio(
+            null, title
+        ))
+    }
 
-class PortfolioViewModelFactory(val application: Application): ViewModelProvider.Factory {
+    fun setPortfolioAddedOrDeleted(b: Boolean) {
+        _portfolioAddedOrDeleted.value = b
+    }
 
-    @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PortfolioViewModel::class.java)) {
-            return PortfolioViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown viewmodel class")
+    fun setHasPortfolio() {
+        app.getSharedPreferences("Portfolio", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("hasPortfolio", false)
+            .apply()
     }
 }

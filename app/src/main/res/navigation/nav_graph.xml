@@ -11,24 +11,20 @@
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
-            android:id="@+id/action_welcomeFragment_to_emptyPortfolioFragment"
-            app:destination="@id/emptyPortfolioFragment" />
-        <action
             android:id="@+id/action_welcomeFragment_to_portfolioFragment"
-            app:destination="@id/portfolioFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/emptyPortfolioFragment"
-        android:name="cryptocurrency.portfolio.tracker.portfolio.EmptyPortfolioFragment"
-        android:label="EmptyPortfolioFragment"
-        tools:layout="@layout/fragment_empty_portfolio">
-        <action
-            android:id="@+id/action_emptyPortfolioFragment_to_portfolioFragment"
-            app:destination="@id/portfolioFragment" />
+            app:destination="@id/portfolioFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/portfolioFragment"
         android:name="cryptocurrency.portfolio.tracker.portfolio.PortfolioFragment"
         android:label="PortfolioFragment"
-        tools:layout="@layout/fragment_portfolio"/>
+        tools:layout="@layout/fragment_portfolio">
+        <action
+            android:id="@+id/action_portfolioFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/portfolioFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
