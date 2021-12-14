@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import cryptocurrency.portfolio.tracker.R
 import cryptocurrency.portfolio.tracker.databinding.PortfolioListItemBinding
-import cryptocurrency.portfolio.tracker.db.Asset
 import cryptocurrency.portfolio.tracker.model.AssetItem
 import java.text.DecimalFormat
 

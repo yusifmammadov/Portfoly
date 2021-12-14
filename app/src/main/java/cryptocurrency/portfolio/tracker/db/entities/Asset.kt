@@ -5,5 +5,6 @@ data class Asset(
     var avgPrice: Double?,
     var amount: Double?,
     val logoUrl: String?,
-    val marketId: String?
+    val marketId: String?,
 )
+
