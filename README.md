@@ -8,3 +8,5 @@ Tech stack:
 - A big part of "networkBoundResource" method is taken from this tutorial by Florian Walther https://www.youtube.com/watch?v=h9XKb4iGM-4&t=2062s
 
 API: https://www.coingecko.com/en/api
+
+Google Play: https://play.google.com/store/apps/details?id=cryptocurrency.portfolio.tracker
