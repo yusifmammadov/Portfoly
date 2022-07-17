@@ -1,4 +1,26 @@
 <resources>
     <string name="app_name">Portfoly</string>
+    <string name="refresh">Refreshing</string>
+    <string name="could_not_refresh">Couldn\'t refresh</string>
+    <string name="asset_deleted">Asset deleted from portfolio</string>
+    <string name="undo">UNDO</string>
+    <string name="coin">Coin</string>
+    <string name="coin_icon">Coin icon</string>
+    <string name="fab_content_desc">Floating Action Button for adding a cryptocurrency</string>
+    <string name="add">Add</string>
+    <string name="portofly_logo">Portofly Logo</string>
+    <string name="create">Create</string>
+    <string name="select_coin">select a coin</string>
+    <string name="usd_price">USD price</string>
+    <string name="usd_amount">USD amount</string>
+    <string name="cancel">Cancel</string>
+    <string name="give_name">Give your new portfolio a name</string>
+    <string name="title">Title</string>
+    <string name="delete_portfolio">Are you sure you want to delete portfolio?</string>
+    <string name="delete">Delete</string>
+    <string name="portfolio_deleted_toast">\"Portfolio Deleted \"</string>
+    <string name="select_asset_toast">Please select an asset from the list</string>
+    <string name="asset_not_found">Such asset doesn\'t exist</string>
+    <string name="fill_all_fields">Please fill in all the fields</string>
 
 </resources>

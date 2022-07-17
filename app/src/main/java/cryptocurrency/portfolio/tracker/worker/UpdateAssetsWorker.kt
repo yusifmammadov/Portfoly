@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import cryptocurrency.portfolio.tracker.PortfolioRepository
+import cryptocurrency.portfolio.tracker.data.PortfolioRepository
 import cryptocurrency.portfolio.tracker.util.UpdateResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

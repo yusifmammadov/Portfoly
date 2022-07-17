@@ -1,8 +1,8 @@
-package cryptocurrency.portfolio.tracker.db.entities
+package cryptocurrency.portfolio.tracker.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import cryptocurrency.portfolio.tracker.model.MarketData
+import cryptocurrency.portfolio.tracker.data.api.model.MarketData
 
 @Entity(tableName = "assets")
 data class Asset(

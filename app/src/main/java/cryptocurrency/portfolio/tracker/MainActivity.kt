@@ -3,10 +3,14 @@ package cryptocurrency.portfolio.tracker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import cryptocurrency.portfolio.tracker.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,9 +27,9 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.findNavController()
         var navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        val sharedPrefs = getSharedPreferences("Portfolio", MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(Constants.PORTFOLY_SHARED_PREFS, MODE_PRIVATE)
 
-        val hasPortfolio = sharedPrefs.getBoolean("hasPortfolio", false)
+        val hasPortfolio = sharedPrefs.getBoolean(Constants.HAS_PORTFOLIO, false)
 
         if(hasPortfolio) {
             navGraph.startDestination = R.id.portfolioFragment
@@ -34,7 +38,14 @@ class MainActivity : AppCompatActivity() {
             navGraph.startDestination = R.id.welcomeFragment
             navController.graph = navGraph
         }
+
+
+
     }
+
+
+
+
 
 
 }

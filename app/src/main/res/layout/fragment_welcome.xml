@@ -23,7 +23,8 @@
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@id/guideline5"
             app:layout_constraintVertical_chainStyle="spread_inside"
-            android:src="@drawable/ic_portfoly_logo_inside_app"/>
+            android:src="@drawable/ic_portfoly_logo_inside_app"
+            android:contentDescription="@string/portofly_logo" />
 
 
         <Button
@@ -32,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
-            android:text="Create"
+            android:text="@string/create"
             app:layout_constraintBottom_toBottomOf="@id/guideline6"
             app:layout_constraintDimensionRatio=""
             app:layout_constraintEnd_toEndOf="@+id/textView"

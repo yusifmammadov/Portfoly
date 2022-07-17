@@ -1,4 +1,4 @@
-package cryptocurrency.portfolio.tracker.model
+package cryptocurrency.portfolio.tracker.data.api.model
 
 data class MarketData(
     val originalAmount: Double?,

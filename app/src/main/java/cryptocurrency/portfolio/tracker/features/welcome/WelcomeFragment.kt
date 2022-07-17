@@ -1,4 +1,4 @@
-package cryptocurrency.portfolio.tracker.welcome
+package cryptocurrency.portfolio.tracker.features.welcome
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import cryptocurrency.portfolio.tracker.databinding.FragmentWelcomeBinding
 import cryptocurrency.portfolio.tracker.dialog.CreatePortfolioDialogFragment
@@ -16,17 +17,20 @@ import java.lang.Exception
 class WelcomeFragment : Fragment(), CreatePortfolioDialogFragment.CreatePortfolioDialogListener {
 
     private lateinit var viewModel: WelcomeViewModel
+    private lateinit var binding: FragmentWelcomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        binding = FragmentWelcomeBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        val binding = FragmentWelcomeBinding.inflate(layoutInflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val welcomeViewModel: WelcomeViewModel by viewModels()
-        viewModel = welcomeViewModel
+        viewModel = ViewModelProvider(this).get(WelcomeViewModel::class.java)
 
         binding.button.setOnClickListener {
             CreatePortfolioDialogFragment().show(childFragmentManager, "createPortfolioDialog")
@@ -39,7 +43,6 @@ class WelcomeFragment : Fragment(), CreatePortfolioDialogFragment.CreatePortfoli
                 } catch (e: Exception) {}
             }
         }
-        return binding.root
     }
 
     override fun onCreatePortfolio(title: String) {

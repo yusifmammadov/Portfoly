@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="cryptocurrency.portfolio.tracker.welcome.WelcomeFragment"
+        android:name="cryptocurrency.portfolio.tracker.features.welcome.WelcomeFragment"
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/portfolioFragment"
-        android:name="cryptocurrency.portfolio.tracker.portfolio.PortfolioFragment"
+        android:name="cryptocurrency.portfolio.tracker.features.portfolio.PortfolioFragment"
         android:label="PortfolioFragment"
         tools:layout="@layout/fragment_portfolio">
         <action

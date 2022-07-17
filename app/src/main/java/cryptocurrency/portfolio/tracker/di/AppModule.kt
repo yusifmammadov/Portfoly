@@ -2,8 +2,8 @@ package cryptocurrency.portfolio.tracker.di
 
 import android.app.Application
 import androidx.room.Room
-import cryptocurrency.portfolio.tracker.api.MarketApiService
-import cryptocurrency.portfolio.tracker.db.PortfolioDatabase
+import cryptocurrency.portfolio.tracker.data.api.MarketApiService
+import cryptocurrency.portfolio.tracker.data.db.PortfolioDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

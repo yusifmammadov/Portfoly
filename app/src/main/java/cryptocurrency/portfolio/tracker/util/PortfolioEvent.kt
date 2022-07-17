@@ -1,6 +1,6 @@
 package cryptocurrency.portfolio.tracker.util
 
-import cryptocurrency.portfolio.tracker.db.entities.Asset
+import cryptocurrency.portfolio.tracker.data.db.entities.Asset
 
 sealed class PortfolioEvent {
 

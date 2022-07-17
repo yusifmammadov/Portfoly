@@ -29,7 +29,8 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/assetSymbol"
-            tools:src="@drawable/ic__785521_bitcoin_blockchain_icon" />
+            tools:src="@drawable/ic__785521_bitcoin_blockchain_icon"
+            android:contentDescription="@string/coin_icon" />
 
         <TextView
             android:id="@+id/assetSymbol"

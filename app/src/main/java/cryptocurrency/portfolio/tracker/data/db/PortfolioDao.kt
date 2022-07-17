@@ -1,11 +1,10 @@
-package cryptocurrency.portfolio.tracker.db
+package cryptocurrency.portfolio.tracker.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import cryptocurrency.portfolio.tracker.db.entities.Asset
-import cryptocurrency.portfolio.tracker.db.entities.Portfolio
-import cryptocurrency.portfolio.tracker.db.entities.AssetData
-import cryptocurrency.portfolio.tracker.db.entities.LastUpdated
+import cryptocurrency.portfolio.tracker.data.db.entities.Asset
+import cryptocurrency.portfolio.tracker.data.db.entities.Portfolio
+import cryptocurrency.portfolio.tracker.data.db.entities.AssetData
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,9 +13,8 @@ interface PortfolioDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPortfolio(portfolio: Portfolio): Long
 
-
     @Query("SELECT * FROM portfolios")
-    fun getAllPortfolios(): LiveData<List<Portfolio>>
+    fun getAllPortfolios(): Flow<List<Portfolio>>
 
     @Update
     suspend fun updateAssets(listAssets: List<Asset>)
@@ -51,8 +49,5 @@ interface PortfolioDao {
 
     @Insert
     suspend fun addAllAssets(data: List<AssetData>): LongArray
-
-    @Insert
-    suspend fun insertLastUpdatedDate(lastUpdated: LastUpdated): Long
 
 }

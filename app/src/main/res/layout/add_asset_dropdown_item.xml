@@ -16,6 +16,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/addAssetSymbolTextView"
             app:layout_constraintDimensionRatio="1:1"
+            android:contentDescription="@string/coin_icon"
             tools:src="@drawable/ic__785521_bitcoin_blockchain_icon" />
 
         <TextView
@@ -26,7 +27,7 @@
             android:fontFamily="@font/roboto_condensed_regular"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
-            android:text="Coin"
+            android:text="@string/coin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -1,4 +1,4 @@
-package cryptocurrency.portfolio.tracker.db.entities
+package cryptocurrency.portfolio.tracker.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

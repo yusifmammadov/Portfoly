@@ -1,11 +1,8 @@
-package cryptocurrency.portfolio.tracker.db;
+package cryptocurrency.portfolio.tracker.data.db;
 
-import android.util.Log
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import cryptocurrency.portfolio.tracker.db.entities.Asset
-import cryptocurrency.portfolio.tracker.model.MarketData
+import cryptocurrency.portfolio.tracker.data.api.model.MarketData
 
 class Converters {
 

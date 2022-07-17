@@ -5,8 +5,8 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import cryptocurrency.portfolio.tracker.db.entities.Asset
-import cryptocurrency.portfolio.tracker.model.MarketData
+import cryptocurrency.portfolio.tracker.data.db.entities.Asset
+import cryptocurrency.portfolio.tracker.data.api.model.MarketData
 
 val colors: List<Int> = ColorTemplate.MATERIAL_COLORS.toMutableList() + ColorTemplate.VORDIPLOM_COLORS.toMutableList()
 

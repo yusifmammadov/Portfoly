@@ -1,8 +1,8 @@
-package cryptocurrency.portfolio.tracker.api
+package cryptocurrency.portfolio.tracker.data.api
 
 
-import cryptocurrency.portfolio.tracker.model.MarketResponse
-import cryptocurrency.portfolio.tracker.model.PriceResponse
+import cryptocurrency.portfolio.tracker.data.api.model.MarketResponse
+import cryptocurrency.portfolio.tracker.data.api.model.PriceResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

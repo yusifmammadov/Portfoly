@@ -1,4 +1,4 @@
-package cryptocurrency.portfolio.tracker.model
+package cryptocurrency.portfolio.tracker.data.api.model
 
 class MarketResponse : ArrayList<MarketResponseItem>()
 

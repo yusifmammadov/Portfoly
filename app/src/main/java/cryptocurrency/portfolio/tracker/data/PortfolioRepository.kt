@@ -1,18 +1,17 @@
-package cryptocurrency.portfolio.tracker
+package cryptocurrency.portfolio.tracker.data
 
 import androidx.room.withTransaction
-import cryptocurrency.portfolio.tracker.api.MarketApiService
-import cryptocurrency.portfolio.tracker.db.PortfolioDatabase
-import cryptocurrency.portfolio.tracker.db.entities.Asset
-import cryptocurrency.portfolio.tracker.db.entities.AssetData
-import cryptocurrency.portfolio.tracker.db.entities.LastUpdated
-import cryptocurrency.portfolio.tracker.db.entities.Portfolio
-import cryptocurrency.portfolio.tracker.model.MarketData
-import cryptocurrency.portfolio.tracker.model.PriceResponse
+import cryptocurrency.portfolio.tracker.data.api.MarketApiService
+import cryptocurrency.portfolio.tracker.data.db.PortfolioDatabase
+import cryptocurrency.portfolio.tracker.data.db.entities.Asset
+import cryptocurrency.portfolio.tracker.data.db.entities.AssetData
+import cryptocurrency.portfolio.tracker.data.db.entities.Portfolio
+import cryptocurrency.portfolio.tracker.data.api.model.MarketData
+import cryptocurrency.portfolio.tracker.data.api.model.PriceResponse
 import cryptocurrency.portfolio.tracker.util.UpdateResult
 import cryptocurrency.portfolio.tracker.util.networkBoundResource
 import kotlinx.coroutines.delay
-import java.util.*
+import kotlinx.coroutines.flow.flow
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -25,7 +24,6 @@ class PortfolioRepository @Inject constructor(
     private val portfolioDao = db.getPortfolioDao()
 
     private var listAssets: List<Asset>? = null
-
 
     fun getAssetList(id: Int) = networkBoundResource(
         query = {
@@ -50,10 +48,8 @@ class PortfolioRepository @Inject constructor(
 
                 val shouldFetch =  lastUpdated == null ||
                         (System.currentTimeMillis() - lastUpdated) > TimeUnit.MINUTES.toMillis(10)
-
                 shouldFetch
             } else false
-
         }
     )
 
@@ -96,14 +92,9 @@ class PortfolioRepository @Inject constructor(
     suspend fun deletePortfolio(id: Int) {
         portfolioDao.deletePortfolio(id)
         portfolioDao.deleteAssetsOfPortfolio(id)
-
     }
 
     suspend fun updateAssetListing(): UpdateResult {
-        val lastUpdated = LastUpdated(
-            null,
-            Calendar.getInstance().timeInMillis
-        )
 
         var longArray = LongArray(0)
         getAllAssetsFromApi()?.let {
@@ -111,7 +102,6 @@ class PortfolioRepository @Inject constructor(
                 db.withTransaction {
                     portfolioDao.deleteAllAssets()
                     longArray = portfolioDao.addAllAssets(it)
-                    portfolioDao.insertLastUpdatedDate(lastUpdated)
                 }
 
             }

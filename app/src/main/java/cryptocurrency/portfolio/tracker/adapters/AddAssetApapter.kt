@@ -1,7 +1,6 @@
 package cryptocurrency.portfolio.tracker.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import cryptocurrency.portfolio.tracker.R
-import cryptocurrency.portfolio.tracker.db.entities.AssetData
+import cryptocurrency.portfolio.tracker.data.db.entities.AssetData
 
 
 class AddAssetApapter(mContext: Context): ArrayAdapter<AssetData>(mContext, 0) {

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import cryptocurrency.portfolio.tracker.R
 import cryptocurrency.portfolio.tracker.databinding.PortfolioListItemBinding
-import cryptocurrency.portfolio.tracker.db.entities.Asset
+import cryptocurrency.portfolio.tracker.data.db.entities.Asset
 import java.text.DecimalFormat
 
 val decUsd = DecimalFormat("0.00")
